@@ -1,0 +1,20 @@
+[
+    "const",
+    "xray_abnormal",
+    "crp_level",
+    "oxygen_saturation",
+    "age",
+    "copd",
+    "air_pollution_index",
+    "chronic_cough",
+    "family_history_cancer",
+    "occupational_exposure",
+    "exercise_hours_per_week",
+    "passive_smoking",
+    "smoking_years",
+    "diet_quality",
+    "healthcare_access",
+    "radon_exposure",
+    "bmi",
+    "shortness_of_breath"
+]

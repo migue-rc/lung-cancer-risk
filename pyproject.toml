@@ -1,0 +1,24 @@
+[project]
+name = "biostatistics"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Miguel R.",email = "miguel@debloat.us"}
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+statsmodels-utils = { path = "/home/rev9/Development/sm_sutils", develop = true }
+scikit-learn-intelex = "^2025.10.1"
+scikit-learn = "^1.8.0"
+ipykernel = "^7.2.0"
+jupyter = "^1.1.1"
+jupyterlab = "^4.5.5"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
