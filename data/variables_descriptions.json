@@ -1,0 +1,122 @@
+[
+  {
+    "name": "age",
+    "description": "Age of the individual in years"
+  },
+  {
+    "name": "gender",
+    "description": "Biological sex (0 = Female, 1 = Male)"
+  },
+  {
+    "name": "education_years",
+    "description": "Total years of formal education completed"
+  },
+  {
+    "name": "income_level",
+    "description": "Socioeconomic status on an ordinal scale (1 = lowest, 5 = highest)"
+  },
+  {
+    "name": "smoker",
+    "description": "Indicates whether the individual has a history of smoking (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "smoking_years",
+    "description": "Total number of years the individual has smoked"
+  },
+  {
+    "name": "cigarettes_per_day",
+    "description": "Average number of cigarettes smoked per day"
+  },
+  {
+    "name": "pack_years",
+    "description": "Cumulative smoking exposure combining duration and intensity"
+  },
+  {
+    "name": "passive_smoking",
+    "description": "Exposure to secondhand smoke (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "air_pollution_index",
+    "description": "Air quality index representing long-term pollution exposure"
+  },
+  {
+    "name": "occupational_exposure",
+    "description": "Exposure to hazardous substances at work (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "radon_exposure",
+    "description": "History of radon exposure (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "family_history_cancer",
+    "description": "Family history of cancer (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "copd",
+    "description": "Diagnosis of chronic obstructive pulmonary disease (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "asthma",
+    "description": "History of asthma (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "previous_tb",
+    "description": "History of tuberculosis infection (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "chronic_cough",
+    "description": "Presence of long-term cough symptoms (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "chest_pain",
+    "description": "Reports of chest pain (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "shortness_of_breath",
+    "description": "Presence of breathing difficulty (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "fatigue",
+    "description": "Persistent fatigue symptoms (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "bmi",
+    "description": "Body mass index category value"
+  },
+  {
+    "name": "oxygen_saturation",
+    "description": "Blood oxygen saturation level (%)"
+  },
+  {
+    "name": "fev1_x10",
+    "description": "Lung function measure derived from forced expiratory volume"
+  },
+  {
+    "name": "crp_level",
+    "description": "C-reactive protein level indicating inflammation"
+  },
+  {
+    "name": "xray_abnormal",
+    "description": "Abnormal findings in chest imaging (0 = No, 1 = Yes)"
+  },
+  {
+    "name": "exercise_hours_per_week",
+    "description": "Average weekly physical activity duration"
+  },
+  {
+    "name": "diet_quality",
+    "description": "Overall dietary quality score (1 = poor, 5 = excellent)"
+  },
+  {
+    "name": "alcohol_units_per_week",
+    "description": "Average alcohol consumption per week"
+  },
+  {
+    "name": "healthcare_access",
+    "description": "Access to healthcare services (1 = poor, 5 = excellent)"
+  },
+  {
+    "name": "lung_cancer_risk",
+    "description": "Target variable indicating elevated lung cancer risk (0 = No, 1 = Yes)"
+  }
+]
