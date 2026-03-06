@@ -20,7 +20,7 @@ const Slider: React.FC<SliderProps> = ({
   distribution
 }) => {
   const renderHistogram = () => {
-    if (!distribution) return <div style={{ height: '40px', width: '100%' }} />;
+    if (!distribution) return <div style={{ height: '40px', width: '100%' }} />; // Placeholder
 
     const { counts, bin_edges } = distribution;
     const maxCount = Math.max(...counts);
@@ -43,8 +43,8 @@ const Slider: React.FC<SliderProps> = ({
           y={`${100 - heightPct}%`}
           width={`${Math.min(100, widthPct)}%`}
           height={`${heightPct}%`}
-          fill={isActive ? "#0056b3" : "#cce5ff"}
-          stroke="#ffffff"
+          fill={isActive ? "#3b82f6" : "#334155"}
+          stroke="#1e293b"
           strokeWidth="0.5"
           rx="1"
           style={{ transition: 'fill 0.2s ease' }}
@@ -67,14 +67,15 @@ const Slider: React.FC<SliderProps> = ({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', marginBottom: '15px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-        <label style={{ fontWeight: 'bold', fontSize: '14px', color: '#333' }}>{label}</label>
+        <label style={{ fontWeight: '600', fontSize: '14px', color: '#f8fafc' }}>{label}</label>
         <span style={{
           fontWeight: 'bold',
-          color: '#0056b3',
-          backgroundColor: '#eef8ff',
-          padding: '2px 8px',
+          color: '#60a5fa',
+          backgroundColor: '#0f172a',
+          padding: '4px 10px',
           borderRadius: '12px',
-          fontSize: '14px'
+          fontSize: '14px',
+          boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.5)'
         }}>
           {typeof value === 'number' ? parseFloat(value.toFixed(2)) : value}
         </span>
@@ -92,13 +93,13 @@ const Slider: React.FC<SliderProps> = ({
         style={{
           width: '100%',
           cursor: 'pointer',
-          accentColor: '#0056b3',
+          accentColor: '#3b82f6',
           margin: 0,
           zIndex: 2,
           position: 'relative'
         }}
       />
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#888', marginTop: '4px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#94a3b8', marginTop: '6px', fontWeight: '500' }}>
         <span>{min}</span>
         <span>{max}</span>
       </div>
