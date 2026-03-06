@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Slider from './Slider';
 
 type FeatureType = 'number' | 'binary';
 
@@ -12,6 +13,7 @@ interface FeatureMetadata {
 
 type ModelWeights = Record<string, number>;
 type FormDataState = Record<string, number>;
+type DistributionData = Record<string, { counts: number[], bin_edges: number[] }>;
 
 const DEFAULT_FORM_DATA: FormDataState = {
   age: 37,
@@ -34,31 +36,39 @@ const DEFAULT_FORM_DATA: FormDataState = {
 };
 
 const FEATURE_METADATA: FeatureMetadata[] = [
-  { name: "age", label: "Age of the individual in years", type: "number" },
-  { name: "smoking_years", label: "Total number of years the individual has smoked", type: "number" },
+  { name: "age", label: "Age of the individual in years", type: "number", min: 18, max: 90 },
+  { name: "smoking_years", label: "Total number of years the individual has smoked", type: "number", min: 0, max: 52 },
   { name: "passive_smoking", label: "Exposure to secondhand smoke", type: "binary" },
-  { name: "air_pollution_index", label: "Air quality index representing long-term pollution exposure", type: "number" },
+  { name: "air_pollution_index", label: "Air quality index representing long-term pollution exposure", type: "number", min: 20, max: 130 },
   { name: "occupational_exposure", label: "Exposure to hazardous substances at work", type: "binary" },
   { name: "radon_exposure", label: "History of radon exposure", type: "binary" },
   { name: "family_history_cancer", label: "Family history of cancer", type: "binary" },
   { name: "copd", label: "Diagnosis of chronic obstructive pulmonary disease", type: "binary" },
   { name: "chronic_cough", label: "Presence of long-term cough symptoms", type: "binary" },
   { name: "shortness_of_breath", label: "Presence of breathing difficulty", type: "binary" },
-  { name: "bmi", label: "Body mass index category value", type: "number" },
-  { name: "oxygen_saturation", label: "Blood oxygen saturation level (%)", type: "number" },
-  { name: "crp_level", label: "C-reactive protein level indicating inflammation", type: "number" },
+  { name: "bmi", label: "Body mass index category value", type: "number", min: 16, max: 37 },
+  { name: "oxygen_saturation", label: "Blood oxygen saturation level (%)", type: "number", min: 85, max: 100 },
+  { name: "crp_level", label: "C-reactive protein level indicating inflammation", type: "number", min: 0, max: 33 },
   { name: "xray_abnormal", label: "Abnormal findings in chest imaging", type: "binary" },
-  { name: "exercise_hours_per_week", label: "Average weekly physical activity duration", type: "number" },
+  { name: "exercise_hours_per_week", label: "Average weekly physical activity duration", type: "number", min: 0, max: 10 },
   { name: "diet_quality", label: "Overall dietary quality score (1 = poor, 5 = excellent)", type: "number", min: 1, max: 5 },
   { name: "healthcare_access", label: "Access to healthcare services (1 = poor, 5 = excellent)", type: "number", min: 1, max: 5 }
 ];
 
+const getRiskColor = (prob: number) => {
+  if (prob < 0.3) return '#52c41a'; // Green
+  if (prob < 0.7) return '#faad14'; // Yellow
+  return '#f5222d'; // Red
+};
+
 function App() {
   const [weights, setWeights] = useState<ModelWeights | null>(null);
+  const [distributions, setDistributions] = useState<DistributionData | null>(null);
   const [formData, setFormData] = useState<FormDataState>(DEFAULT_FORM_DATA);
   const [prediction, setPrediction] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-useEffect(() => {
+
+  useEffect(() => {
     Promise.all([
       fetch(`${import.meta.env.BASE_URL}ols_weights.json`).then(res => {
         if (!res.ok) throw new Error("Could not load weights.");
@@ -67,9 +77,13 @@ useEffect(() => {
       fetch(`${import.meta.env.BASE_URL}ols_weights_features.json`).then(res => {
         if (!res.ok) throw new Error("Could not load features list.");
         return res.json();
+      }),
+      fetch(`${import.meta.env.BASE_URL}feature_distributions.json`).then(res => {
+        if (!res.ok) return null; // Make distributions optional
+        return res.json();
       })
     ])
-      .then(([weightsData, featuresData]) => {
+      .then(([weightsData, featuresData, distributionsData]) => {
         const weightsMap: ModelWeights = {};
 
         if (Array.isArray(weightsData) && Array.isArray(featuresData)) {
@@ -88,20 +102,14 @@ useEffect(() => {
 
         console.log("Successfully mapped weights:", weightsMap);
         setWeights(weightsMap);
+        if (distributionsData) {
+            setDistributions(distributionsData);
+        }
       })
       .catch(err => setError(err instanceof Error ? err.message : String(err)));
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, feature: FeatureMetadata) => {
-    const value = feature.type === 'binary'
-      ? (e.target.checked ? 1 : 0)
-      : parseFloat(e.target.value) || 0;
-
-    setFormData(prev => ({ ...prev, [feature.name]: value }));
-  };
-
-  const calculatePrediction = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  useEffect(() => {
     if (!weights) return;
 
     let z = weights['const'] || 0;
@@ -114,6 +122,14 @@ useEffect(() => {
 
     const probability = 1 / (1 + Math.exp(-z));
     setPrediction(probability);
+  }, [formData, weights]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, feature: FeatureMetadata) => {
+    const value = feature.type === 'binary'
+      ? (e.target.checked ? 1 : 0)
+      : parseFloat(e.target.value) || 0;
+
+    setFormData(prev => ({ ...prev, [feature.name]: value }));
   };
 
   if (error) return <div style={{ color: 'red', padding: '20px' }}>Error: {error}</div>;
@@ -121,54 +137,97 @@ useEffect(() => {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>Lung Cancer Risk Predictor</h1>
-      <p>Fill out the parameters below to calculate the estimated risk using our Logistic Regression model.</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+        <h1 style={{ margin: 0 }}>Lung Cancer Risk Predictor</h1>
+        <a 
+          href="https://github.com/migue-rc/biostatistics" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '8px 16px',
+            backgroundColor: '#24292e',
+            color: 'white',
+            textDecoration: 'none',
+            borderRadius: '6px',
+            fontWeight: 'bold',
+            fontSize: '14px'
+          }}
+        >
+          <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+          View Research on GitHub
+        </a>
+      </div>
+      
+      <p style={{ marginBottom: '30px' }}>Adjust the parameters below to automatically calculate the estimated risk using our Logistic Regression model.</p>
 
-      <form onSubmit={calculatePrediction} style={{ display: 'grid', gap: '15px', marginBottom: '30px' }}>
+      {prediction !== null && (
+        <div style={{
+          position: 'sticky',
+          top: '20px',
+          zIndex: 100,
+          padding: '25px',
+          margin: '0 0 40px 0',
+          backgroundColor: '#ffffff',
+          borderRadius: '16px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          border: `2px solid ${getRiskColor(prediction)}`,
+          transition: 'border-color 0.4s ease'
+        }}>
+          <h2 style={{ margin: '0 0 10px 0', color: '#333', fontSize: '20px', textTransform: 'uppercase', letterSpacing: '1px' }}>Estimated Risk</h2>
+          <div style={{ fontSize: '56px', fontWeight: '900', color: getRiskColor(prediction), textShadow: '1px 1px 2px rgba(0,0,0,0.1)', transition: 'color 0.4s ease' }}>
+            {(prediction * 100).toFixed(1)}%
+          </div>
+          <div style={{ width: '100%', height: '12px', backgroundColor: '#f0f0f0', borderRadius: '6px', marginTop: '15px', overflow: 'hidden' }}>
+            <div style={{ 
+              width: `${prediction * 100}%`, 
+              height: '100%', 
+              backgroundColor: getRiskColor(prediction),
+              transition: 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease'
+            }} />
+          </div>
+        </div>
+      )}
+
+      <div style={{ display: 'grid', gap: '20px' }}>
         {FEATURE_METADATA.map((feature) => (
-          <div key={feature.name} style={{ display: 'flex', flexDirection: 'column' }}>
-            <label style={{ fontWeight: 'bold', marginBottom: '5px' }}>
-              {feature.label}
-            </label>
-
+          <div key={feature.name} style={{ display: 'flex', flexDirection: 'column', padding: '15px', backgroundColor: '#f9f9f9', borderRadius: '12px', border: '1px solid #eaeaea' }}>
             {feature.type === 'binary' ? (
-              <label>
-                <input
-                  type="checkbox"
-                  checked={formData[feature.name] === 1}
-                  onChange={(e) => handleInputChange(e, feature)}
-                /> Yes
-              </label>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <label style={{ fontWeight: 'bold', fontSize: '15px', color: '#444', flex: 1 }}>
+                  {feature.label}
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '8px', fontWeight: 'bold' }}>
+                  <input
+                    type="checkbox"
+                    checked={formData[feature.name] === 1}
+                    onChange={(e) => handleInputChange(e, feature)}
+                    style={{ width: '20px', height: '20px', cursor: 'pointer', accentColor: '#0056b3' }}
+                  /> Yes
+                </label>
+              </div>
             ) : (
-              <input
-                type="number"
-                step="any"
+              <Slider
+                label={feature.label}
+                value={formData[feature.name]}
                 min={feature.min}
                 max={feature.max}
-                value={formData[feature.name]}
-                onChange={(e) => handleInputChange(e, feature)}
-                style={{ padding: '8px', maxWidth: '200px' }}
+                step={feature.name === 'bmi' || feature.name === 'crp_level' ? "any" : 1}
+                onChange={(val) => setFormData(prev => ({ ...prev, [feature.name]: val }))}
+                distribution={distributions?.[feature.name]}
               />
             )}
           </div>
         ))}
+      </div>
 
-        <button
-          type="submit"
-          style={{ padding: '10px 20px', fontSize: '16px', cursor: 'pointer', backgroundColor: '#0056b3', color: 'white', border: 'none', borderRadius: '4px', marginTop: '10px' }}
-        >
-          Calculate Risk
-        </button>
-      </form>
-
-      {prediction !== null && (
-        <div style={{ padding: '20px', backgroundColor: '#eef8ff', border: '1px solid #bce0fd', borderRadius: '4px' }}>
-          <h2>Prediction Result</h2>
-          <p style={{ fontSize: '24px', margin: 0 }}>
-            Estimated Risk Probability: <strong>{(prediction * 100).toFixed(2)}%</strong>
-          </p>
-        </div>
-      )}
     </div>
   );
 }
