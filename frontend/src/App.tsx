@@ -139,8 +139,11 @@ function App() {
   if (!weights) return <div style={{ padding: '20px' }}>Loading model weights...</div>;
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px', fontFamily: 'sans-serif', backgroundColor: '#0f172a', minHeight: '100vh', color: '#f8fafc' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+    <div style={{ display: 'flex', minHeight: '100vh',
+        backgroundColor: '#0f172a',
+        color: '#f8fafc', fontFamily: 'sans-serif', alignItems: 'center', justifyContent: 'center', width:"100vw" }}>
+      <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px', width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
         <h1 style={{ margin: 0, fontSize: '28px' }}>Lung Cancer Risk Predictor</h1>
         <a 
           href="https://github.com/migue-rc/biostatistics" 
@@ -235,6 +238,7 @@ function App() {
         ))}
       </div>
 
+      </div>
     </div>
   );
 }
