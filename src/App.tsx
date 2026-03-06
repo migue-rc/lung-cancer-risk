@@ -13,7 +13,6 @@ interface FeatureMetadata {
 type ModelWeights = Record<string, number>;
 type FormDataState = Record<string, number>;
 
-// Your requested default values
 const DEFAULT_FORM_DATA: FormDataState = {
   age: 37,
   smoking_years: 45,
@@ -56,19 +55,39 @@ const FEATURE_METADATA: FeatureMetadata[] = [
 
 function App() {
   const [weights, setWeights] = useState<ModelWeights | null>(null);
-  // Initialize state directly with your defaults
   const [formData, setFormData] = useState<FormDataState>(DEFAULT_FORM_DATA);
   const [prediction, setPrediction] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}ols_weights.json`)
-      .then(res => {
-        if (!res.ok) throw new Error("Could not load weights file.");
+useEffect(() => {
+    Promise.all([
+      fetch(`${import.meta.env.BASE_URL}ols_weights.json`).then(res => {
+        if (!res.ok) throw new Error("Could not load weights.");
+        return res.json();
+      }),
+      fetch(`${import.meta.env.BASE_URL}ols_weights_features.json`).then(res => {
+        if (!res.ok) throw new Error("Could not load features list.");
         return res.json();
       })
-      .then((data: ModelWeights) => {
-        setWeights(data);
+    ])
+      .then(([weightsData, featuresData]) => {
+        const weightsMap: ModelWeights = {};
+
+        if (Array.isArray(weightsData) && Array.isArray(featuresData)) {
+          featuresData.forEach((featureName: string, index: number) => {
+            weightsMap[featureName] = weightsData[index];
+          });
+        }
+        else if (typeof weightsData === 'object' && !Array.isArray(weightsData)) {
+          const keys = Object.keys(weightsData);
+          if (keys.length > 0 && typeof weightsData[keys[0]] === 'object') {
+             Object.assign(weightsMap, weightsData[keys[0]]);
+          } else {
+             Object.assign(weightsMap, weightsData);
+          }
+        }
+
+        console.log("Successfully mapped weights:", weightsMap);
+        setWeights(weightsMap);
       })
       .catch(err => setError(err instanceof Error ? err.message : String(err)));
   }, []);
