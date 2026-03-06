@@ -34,7 +34,7 @@ We began by analyzing the dataset to understand the relationships between differ
 👉 **[View the EDA Notebook](notebooks/behavioral.ipynb)**
 👉 **[View the Feature Selection Notebook](notebooks/features_selection.ipynb)**
 
-![Feature Impact](public/plots/features_impact.jpg)
+![Feature Impact](frontend/public/plots/features_impact.jpg)
 
 ### 2. Model Training (Logistic Regression vs Lasso)
 We evaluated multiple models. Logistic Regression was ultimately chosen for its interpretability and ease of extraction (weights and intercept) for the frontend application.
@@ -42,21 +42,21 @@ We evaluated multiple models. Logistic Regression was ultimately chosen for its 
 👉 **[View the Modeling Notebook](notebooks/modeling.ipynb)**
 
 <div style="display: flex; gap: 10px;">
-  <img src="public/plots/confusion_logit.jpg" width="48%" alt="Logit Confusion Matrix" />
-  <img src="public/plots/confusion_lasso.jpg" width="48%" alt="Lasso Confusion Matrix" />
+  <img src="frontend/public/plots/confusion_logit.jpg" width="48%" alt="Logit Confusion Matrix" />
+  <img src="frontend/public/plots/confusion_lasso.jpg" width="48%" alt="Lasso Confusion Matrix" />
 </div>
 
 ### 3. Model Interpretability (SHAP Values)
 To ensure the model makes decisions based on logical medical grounds, we used SHAP (SHapley Additive exPlanations) to explain individual predictions and global feature importance.
 
 **Global Feature Importance:**
-![SHAP Feature Importance](public/plots/shap_feature_importance.jpg)
+![SHAP Feature Importance](frontend/public/plots/shap_feature_importance.jpg)
 
 **SHAP Summary Plot:**
-![SHAP Summary](public/plots/shap_summary.jpg)
+![SHAP Summary](frontend/public/plots/shap_summary.jpg)
 
 **Single Prediction Explanation:**
-![Single Explanation](public/plots/single_explanation.jpg)
+![Single Explanation](frontend/public/plots/single_explanation.jpg)
 
 ---
 
