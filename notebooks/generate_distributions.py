@@ -21,8 +21,8 @@ for feature in features:
             "bin_edges": bin_edges.tolist()
         }
 
-with open('../public/feature_distributions.json', 'w') as f:
+with open('../frontend/public/feature_distributions.json', 'w') as f:
     json.dump(distributions, f)
 
-print("Distributions saved to ../public/feature_distributions.json")
+print("Distributions saved to ../frontend/public/feature_distributions.json")
 
