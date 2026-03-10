@@ -10,9 +10,13 @@
 
 An interactive, end-to-end data science project demonstrating the lifecycle of a machine learning model from exploratory data analysis (EDA) to a fully deployed frontend application.
 
+<video src="frontend/public/lung-cancer-risk-demo.mp4" controls="controls" style="max-width: 100%;"></video>
+
 🔗 **[Live Demo: Lung Cancer Risk Predictor](https://migue-rc.github.io/lung-cancer-risk/)**
 
 This project predicts the estimated probability of lung cancer based on various health, behavioral, and environmental features using a Logistic Regression model.
+
+> **⚠️ Medical Disclaimer:** This application and its underlying model are for educational and demonstrative purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
 
 ---
 
@@ -29,7 +33,7 @@ The objective of this repository is to serve as a comprehensive portfolio piece 
 All research, data preprocessing, and modeling were conducted in Jupyter Notebooks (`/notebooks`).
 
 ### 1. Exploratory Data Analysis & Feature Selection
-We began by analyzing the dataset to understand the relationships between different variables and the target (`lung_cancer_risk`). 
+We began by analyzing the [dataset](https://www.kaggle.com/datasets/dhrubangtalukdar/lung-cancer-prediction-dataset) to understand the relationships between different variables and the target (`lung_cancer_risk`). 
 
 👉 **[View the EDA Notebook](notebooks/behavioral.ipynb)**
 👉 **[View the Feature Selection Notebook](notebooks/features_selection.ipynb)**
