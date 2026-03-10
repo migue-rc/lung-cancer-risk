@@ -10,7 +10,7 @@
 
 An interactive, end-to-end data science project demonstrating the lifecycle of a machine learning model from exploratory data analysis (EDA) to a fully deployed frontend application.
 
-🔗 **[Live Demo: Lung Cancer Risk Predictor](https://migue-rc.github.io/biostatistics/)**
+🔗 **[Live Demo: Lung Cancer Risk Predictor](https://migue-rc.github.io/lung-cancer-risk/)**
 
 This project predicts the estimated probability of lung cancer based on various health, behavioral, and environmental features using a Logistic Regression model.
 
