@@ -80,9 +80,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-3f230b53dc93e4a04bf4a3505d77a42a.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-0738663c7c037cf665a86e7eb60c4439.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-9f74c3406a507f2d1f67bd7731720ed3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-0738663c7c037cf665a86e7eb60c4439.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-22e386d673eb27a037a9ab8590791d54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-df7de8fec9041e4cf553be1fa0c04d3f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-22e386d673eb27a037a9ab8590791d54.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -119,12 +119,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link rel="stylesheet" href="../local-style.css">
 <meta property="og:title" content="Biostatistics Modeling: Lung Cancer Risk Analysis">
 <meta property="og:description" content="An interactive, end-to-end data science project demonstrating the lifecycle of a machine learning model from exploratory data analysis (EDA) to a fully deployed frontend application.">
-<meta property="og:image" content="https://dmigue-rc.github.io/lung-cancer-risk/notebooks/modeling_files/figure-html/cell-5-output-1.png">
+<meta property="og:image" content="https://migue-rc.github.io/lung-cancer-risk/notebooks/modeling_files/figure-html/cell-5-output-1.png">
 <meta property="og:image:height" content="1589">
 <meta property="og:image:width" content="1715">
 <meta name="twitter:title" content="Biostatistics Modeling: Lung Cancer Risk Analysis">
 <meta name="twitter:description" content="An interactive, end-to-end data science project demonstrating the lifecycle of a machine learning model from exploratory data analysis (EDA) to a fully deployed frontend application.">
-<meta name="twitter:image" content="https://dmigue-rc.github.io/lung-cancer-risk/notebooks/modeling_files/figure-html/cell-5-output-1.png">
+<meta name="twitter:image" content="https://migue-rc.github.io/lung-cancer-risk/notebooks/modeling_files/figure-html/cell-5-output-1.png">
 <meta name="twitter:image-height" content="1589">
 <meta name="twitter:image-width" content="1715">
 <meta name="twitter:card" content="summary_large_image">
@@ -325,11 +325,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link active" data-scroll-target="#data-preparation">1. Data Preparation</a></li>
+  <li><a href="#data-loading" id="toc-data-loading" class="nav-link active" data-scroll-target="#data-loading">0. Data Loading</a></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">1. Data Preparation</a></li>
   <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">2. Exploratory Data Analysis (EDA)</a></li>
   <li><a href="#multicollinearity-and-vif" id="toc-multicollinearity-and-vif" class="nav-link" data-scroll-target="#multicollinearity-and-vif">3. Multicollinearity and VIF</a></li>
   <li><a href="#modeling-logistic-regression" id="toc-modeling-logistic-regression" class="nav-link" data-scroll-target="#modeling-logistic-regression">4. Modeling: Logistic Regression</a></li>
-  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">5. Model Evaluation</a>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">5. Model Evaluation</a></li>
+  <li><a href="#b.-benchmark-l1-regularized-logistic-regression" id="toc-b.-benchmark-l1-regularized-logistic-regression" class="nav-link" data-scroll-target="#b.-benchmark-l1-regularized-logistic-regression">5b. Benchmark: L1-Regularized Logistic Regression</a>
   <ul class="collapse">
   <li><a href="#model-comparison-conclusion" id="toc-model-comparison-conclusion" class="nav-link" data-scroll-target="#model-comparison-conclusion">Model Comparison Conclusion</a></li>
   </ul></li>
@@ -340,6 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#local-explanations-single-prediction" id="toc-local-explanations-single-prediction" class="nav-link" data-scroll-target="#local-explanations-single-prediction">Local Explanations: Single Prediction</a></li>
   <li><a href="#feature-dependence" id="toc-feature-dependence" class="nav-link" data-scroll-target="#feature-dependence">Feature Dependence</a></li>
   </ul></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">8. Conclusions</a></li>
   </ul>
 </nav>
     </div>
@@ -366,6 +369,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p>In this notebook, we will focus on predicting lung cancer risk based on patient data. Our approach includes: 1. <strong>Exploratory Data Analysis (EDA):</strong> Examining data distributions and correlations among features. 2. <strong>Feature Engineering &amp; Selection:</strong> Handling multicollinearity using Variance Inflation Factor (VIF). 3. <strong>Supervised Modeling:</strong> Training Logistic Regression and Lasso models. 4. <strong>Model Evaluation &amp; Interpretation:</strong> Comparing models using precision, recall, and F1-score, and explaining model predictions using SHAP values.</p>
+<section id="data-loading" class="level2">
+<h2 class="anchored" data-anchor-id="data-loading">0. Data Loading</h2>
+<p>We load the lung cancer dataset (5,000 patients, 30 variables) together with its variable descriptions. The features span demographics (<code>age</code>, <code>education_years</code>), smoking behavior (<code>smoking_years</code>, <code>cigarettes_per_day</code>, <code>pack_years</code>), environmental exposures (<code>air_pollution_index</code>, <code>radon_exposure</code>), medical history (<code>copd</code>, <code>family_history_cancer</code>), and clinical measurements (<code>oxygen_saturation</code>, <code>crp_level</code>, <code>xray_abnormal</code>).</p>
+<blockquote class="blockquote">
+<p><strong>Note on the data:</strong> this is a synthetic educational dataset from Kaggle. Effect sizes are considerably stronger than in real clinical data, which is why the model separates classes more cleanly than any real-world screening tool would. The methodology is the point here, not the medical conclusions.</p>
+</blockquote>
 <div id="4da679c5c2448d34" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:01.106407513Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:00.993337863Z&quot;}}" data-execution_count="2">
 <details class="code-fold">
 <summary>Code</summary>
@@ -696,7 +706,7 @@ None</code></pre>
 </div>
 </div>
 </div>
-<p>In this notebook, we will focus on predicting lung cancer risk based on patient data. Our approach includes: 1. <strong>Exploratory Data Analysis (EDA):</strong> Examining data distributions and correlations among features. 2. <strong>Feature Engineering &amp; Selection:</strong> Handling multicollinearity using Variance Inflation Factor (VIF). 3. <strong>Supervised Modeling:</strong> Training Logistic Regression and Lasso models. 4. <strong>Model Evaluation &amp; Interpretation:</strong> Comparing models using precision, recall, and F1-score, and explaining model predictions using SHAP values.</p>
+</section>
 <section id="data-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="data-preparation">1. Data Preparation</h2>
 <p>First, we split our dataset into training and testing sets. We use a stratified split on the target variable <code>lung_cancer_risk</code> to ensure both sets have a representative proportion of the positive class.</p>
@@ -765,6 +775,7 @@ None</code></pre>
 </div>
 </div>
 </div>
+<p>We hold out 20% of the data for testing, stratifying on the target so both splits keep the same class mix. The histogram below confirms the <strong>class imbalance</strong>: roughly 3 in 4 patients are negative. This matters later — it is why we look beyond accuracy when evaluating, and why the regularized benchmark uses class weighting.</p>
 <div id="421cfdc1aca824a2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:04.147881246Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:04.070786436Z&quot;}}" data-execution_count="7">
 <details class="code-fold">
 <summary>Code</summary>
@@ -852,7 +863,7 @@ Features dropped: 3</code></pre>
 </section>
 <section id="modeling-logistic-regression" class="level2">
 <h2 class="anchored" data-anchor-id="modeling-logistic-regression">4. Modeling: Logistic Regression</h2>
-<p>We will start by training a Logistic Regression model (Logit) from <code>statsmodels</code>. To select the most relevant features, we employ a <strong>stepwise selection</strong> method, iteratively adding features that significantly improve the model based on their p-values.</p>
+<p>We train a Logistic Regression model (<code>statsmodels</code> Logit) and select features via <strong>backward elimination</strong>: starting from the full cleaned feature set, we iteratively drop the least significant feature (highest p-value above 0.05) and refit, until every remaining coefficient is statistically significant. This yields a compact, interpretable model where every retained feature earns its place.</p>
 <div id="26d7969d31ded177" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.053146563Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:04.905853054Z&quot;}}" data-execution_count="9">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1111,6 +1122,11 @@ Optimal features: ['age', 'smoking_years', 'passive_smoking', 'air_pollution_ind
 <br><br>Possibly complete quasi-separation: A fraction 0.67 of observations can be<br>perfectly predicted. This might indicate that there is complete<br>quasi-separation. In this case some parameters will not be identified.
 </div>
 </div>
+</section>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">5. Model Evaluation</h2>
+<p>We evaluate on the held-out test set using a 0.5 probability threshold. Accuracy alone is misleading here — only ~25% of cases are positive, so a model that always predicts “no cancer” would score ~75% while being clinically useless.</p>
+<p>The metric that matters most in this context is <strong>Recall</strong> (sensitivity): of the patients who actually have cancer, how many did we catch? In a screening setting, a false negative (a missed cancer) is far more costly than a false positive (an unnecessary follow-up test).</p>
 <div id="72d0fadba6d9b57" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.219361462Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.055434888Z&quot;}}" data-execution_count="10">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1148,102 +1164,73 @@ Recall:  0.9678714859437751</code></pre>
 </div>
 </div>
 </section>
-<section id="model-evaluation" class="level2">
-<h2 class="anchored" data-anchor-id="model-evaluation">5. Model Evaluation</h2>
-<p>The impressive <strong>Recall</strong> score gives us confidence that the model is performing well, particularly in identifying true positive cases. In medical diagnoses such as lung cancer prediction, minimizing false negatives (i.e., missing a cancer diagnosis) is critical, making Recall a primary metric.</p>
-<p>Overall, we have reached a good model that generalizes well to the unseen test data. Next, we will compare it against a <strong>Lasso (L1 Regularization)</strong> model to evaluate differences in metrics and feature selection.</p>
-<div id="696cbeaed5a0a864" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.275043451Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.221742289Z&quot;}}" data-execution_count="11">
+<section id="b.-benchmark-l1-regularized-logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="b.-benchmark-l1-regularized-logistic-regression">5b. Benchmark: L1-Regularized Logistic Regression</h2>
+<p>As a robustness check we fit a second logistic regression, this time with an <strong>L1 (lasso) penalty</strong> via scikit-learn. Instead of dropping features by p-value, the L1 penalty performs feature selection implicitly by shrinking weak coefficients to exactly zero. <code>class_weight='balanced'</code> compensates for the class imbalance seen above.</p>
+<div id="696cbeaed5a0a864" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.275043451Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.221742289Z&quot;}}">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils <span class="im">import</span> compute_sample_weight</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Lasso</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">1.0</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> compute_sample_weight(class_weight<span class="op">=</span><span class="st">'balanced'</span>, y<span class="op">=</span>y_train)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> Lasso(alpha<span class="op">=</span>alpha, random_state<span class="op">=</span>seed)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train, sample_weight<span class="op">=</span>weights)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>clf_selected_features <span class="op">=</span> X_train.columns[clf.coef_ <span class="op">!=</span> <span class="dv">0</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># L1-regularized *logistic* regression (a true apples-to-apples comparison</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># with the statsmodels Logit above; sklearn's Lasso is linear regression).</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> LogisticRegression(penalty<span class="op">=</span><span class="st">'l1'</span>, solver<span class="op">=</span><span class="st">'liblinear'</span>, C<span class="op">=</span><span class="fl">1.0</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                         class_weight<span class="op">=</span><span class="st">'balanced'</span>, random_state<span class="op">=</span>seed)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>clf.fit(X_train, y_train)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>clf_selected_features <span class="op">=</span> X_train.columns[clf.coef_[<span class="dv">0</span>] <span class="op">!=</span> <span class="dv">0</span>]</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>y_pred_lasso <span class="op">=</span> clf.predict(X_test[X_train.columns])</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>y_pred_lasso <span class="op">=</span> (y_pred_lasso <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lasso selected features: "</span>, clf_selected_features.tolist())</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stepwise selected features: "</span>, features)</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Common features: "</span>, [features[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(features)) <span class="cf">if</span> features[i] <span class="kw">in</span> clf_selected_features])</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logit Excluded features from Lasso: "</span>, clf_selected_features.difference(features).tolist())</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lasso Excluded features from Logit: "</span>, <span class="bu">list</span>(<span class="bu">set</span>(features).difference(clf_selected_features)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lasso selected features: "</span>, clf_selected_features.tolist())</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Stepwise selected features: "</span>, features)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Common features: "</span>, [features[i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(features)) <span class="cf">if</span> features[i] <span class="kw">in</span> clf_selected_features])</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Logit Excluded features from Lasso: "</span>, clf_selected_features.difference(features).tolist())</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Lasso Excluded features from Logit: "</span>, <span class="bu">list</span>(<span class="bu">set</span>(features).difference(clf_selected_features)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Lasso selected features:  ['smoking_years', 'cigarettes_per_day', 'pack_years']
-Stepwise selected features:  ['age', 'smoking_years', 'passive_smoking', 'air_pollution_index', 'occupational_exposure', 'radon_exposure', 'family_history_cancer', 'copd', 'chronic_cough', 'shortness_of_breath', 'bmi', 'oxygen_saturation', 'crp_level', 'xray_abnormal', 'exercise_hours_per_week', 'diet_quality', 'healthcare_access']
-Common features:  ['smoking_years']
-Logit Excluded features from Lasso:  ['cigarettes_per_day', 'pack_years']
-Lasso Excluded features from Logit:  ['age', 'family_history_cancer', 'diet_quality', 'occupational_exposure', 'radon_exposure', 'copd', 'shortness_of_breath', 'oxygen_saturation', 'xray_abnormal', 'air_pollution_index', 'passive_smoking', 'bmi', 'exercise_hours_per_week', 'chronic_cough', 'crp_level', 'healthcare_access']</code></pre>
 </div>
-</div>
-<p>Lasso is highly aggressive with its L1 penalty and selected only 3 features: <code>smoking_years</code>, <code>cigarettes_per_day</code>, and <code>pack_years</code>. In contrast, the stepwise selection retained 17 features and correctly avoided <code>pack_years</code> (which we had previously dropped due to high VIF).</p>
-<div id="959c5adfcee0cb46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.525254602Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.283091581Z&quot;}}" data-execution_count="12">
+<p>Both approaches perform feature selection, but by different mechanisms: the L1 penalty shrinks uninformative coefficients exactly to zero during optimization, while backward elimination drops features by statistical significance. Comparing the two selected feature sets is a useful robustness check — features chosen by <strong>both</strong> methods are the ones to trust most.</p>
+<div id="959c5adfcee0cb46" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.525254602Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.283091581Z&quot;}}">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_confusion_matrix</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>confusion_matrix_lasso_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/confusion_lasso.jpg'</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plot_confusion_matrix(y_test, y_pred_lasso, title<span class="op">=</span><span class="st">"Confusion matrix Lasso"</span>, plot_file<span class="op">=</span>confusion_matrix_lasso_image)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy: "</span>, accuracy_score(y_test, y_pred_lasso))</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1: "</span>, f1_score(y_test, y_pred_lasso))</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision: "</span>, precision_score(y_test, y_pred_lasso))</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Recall: "</span>, recall_score(y_test, y_pred_lasso))</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_confusion_matrix</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>confusion_matrix_lasso_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/confusion_lasso.jpg'</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>plot_confusion_matrix(y_test, y_pred_lasso, title<span class="op">=</span><span class="st">"Confusion matrix Lasso"</span>, plot_file<span class="op">=</span>confusion_matrix_lasso_image)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Accuracy: "</span>, accuracy_score(y_test, y_pred_lasso))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"F1: "</span>, f1_score(y_test, y_pred_lasso))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Precision: "</span>, precision_score(y_test, y_pred_lasso))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Recall: "</span>, recall_score(y_test, y_pred_lasso))</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Plot saved successfully to: ../frontend/public/plots/confusion_lasso.jpg</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="modeling_files/figure-html/cell-12-output-2.png" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Accuracy:  0.912
-F1:  0.8422939068100358
-Precision:  0.7605177993527508
-Recall:  0.9437751004016064</code></pre>
-</div>
 </div>
 <section id="model-comparison-conclusion" class="level3">
 <h3 class="anchored" data-anchor-id="model-comparison-conclusion">Model Comparison Conclusion</h3>
-<p>The Lasso model performed significantly worse in detecting positive cases. It skipped several cases of lung cancer, resulting in a much lower Recall.</p>
-<p>In a life-threatening context, achieving a high Recall score is crucial, and sacrificing a small amount of precision is totally acceptable. Lasso did not outperform the Logit model (with stepwise selection) on Recall or F1-score. Therefore, we will proceed with our Logistic Regression model.</p>
+<p>When comparing the two models, we weigh Recall above raw accuracy for the clinical reasons outlined above. The backward-elimination Logit remains our deployment choice: its coefficients map one-to-one to interpretable log-odds contributions per feature, its feature set was vetted for multicollinearity beforehand (VIF), and its statistical summary (p-values, confidence intervals) supports the kind of scrutiny expected in a biostatistics setting.</p>
+<p>The regularized model serves as a sanity check that a different selection mechanism lands on a similar signal — not as a competing deployment candidate.</p>
 </section>
 </section>
 <section id="saving-model-artifacts" class="level2">
 <h2 class="anchored" data-anchor-id="saving-model-artifacts">6. Saving Model Artifacts</h2>
 <p>We will serialize and save the coefficients of our chosen Logistic Regression model, along with the list of selected features. This will allow us to reproduce the scoring and deploy the model for future predictions.</p>
-<div id="8f0e8db51e0ea076" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.580256327Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.526913055Z&quot;}}" data-execution_count="13">
+<div id="8f0e8db51e0ea076" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.580256327Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.526913055Z&quot;}}">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we save the coefficients for further predictions</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>out_dir <span class="op">=</span> <span class="st">'../frontend/public'</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ols_filename <span class="op">=</span> <span class="st">'ols_weights'</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>coeffs <span class="op">=</span> final_model_logit.params.tolist()</span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>os.makedirs(out_dir, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>ols_filename<span class="sc">}</span><span class="ss">.json"</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    json.dump(coeffs, f, indent<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Model coefficients saved to '</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>ols_filename<span class="sc">}</span><span class="ss">.json'"</span>)</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    features_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>ols_filename<span class="sc">}</span><span class="ss">_features.json"</span></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># we save the features and their order for reference</span></span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>features_filename<span class="sc">}</span><span class="ss">"</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the add the const as the first feature</span></span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        json.dump([<span class="st">'const'</span>,<span class="op">*</span>features], f, indent<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Features saved to '</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>ols_filename<span class="sc">}</span><span class="ss">_features.json'"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># we save the coefficients for further predictions</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>out_dir <span class="op">=</span> <span class="st">'../frontend/public'</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>logit_filename <span class="op">=</span> <span class="st">'logit_weights'</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>coeffs <span class="op">=</span> final_model_logit.params.tolist()</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>os.makedirs(out_dir, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>logit_filename<span class="sc">}</span><span class="ss">.json"</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    json.dump(coeffs, f, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Model coefficients saved to '</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>logit_filename<span class="sc">}</span><span class="ss">.json'"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    features_filename <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>logit_filename<span class="sc">}</span><span class="ss">_features.json"</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># we save the features and their order for reference</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="ss">f"</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>features_filename<span class="sc">}</span><span class="ss">"</span>, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># the add the const as the first feature</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        json.dump([<span class="st">'const'</span>,<span class="op">*</span>features], f, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Features saved to '</span><span class="sc">{</span>out_dir<span class="sc">}</span><span class="ss">/</span><span class="sc">{</span>logit_filename<span class="sc">}</span><span class="ss">_features.json'"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>Model coefficients saved to '../frontend/public/ols_weights.json'
-Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
-</div>
 </div>
 </section>
 <section id="model-interpretability-with-shap" class="level2">
@@ -1252,11 +1239,11 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="29b90e72de9309c9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:05.907484223Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.582375870Z&quot;}}" data-execution_count="14">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_coef</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>features_impact_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/features_impact.jpg'</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plot_coef(final_model_logit, plot_file<span class="op">=</span>features_impact_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_coef</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>features_impact_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/features_impact.jpg'</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plot_coef(final_model_logit, plot_file<span class="op">=</span>features_impact_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Plot saved successfully to: ../frontend/public/plots/features_impact.jpg</code></pre>
@@ -1275,20 +1262,20 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="caad99090dc7f006" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:31.125284584Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:05.909934302Z&quot;}}" data-execution_count="15">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_summary</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>X_test_shap <span class="op">=</span> X_test[features]</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>shap_summary_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_summary.jpg'</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>with_constant <span class="op">=</span> sm.add_constant(X_test_shap)</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>plot_shap_summary(</span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    features_to_drop<span class="op">=</span>[<span class="st">'const'</span>],</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    plot_type<span class="op">=</span><span class="st">'violin'</span>,</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    show<span class="op">=</span><span class="va">False</span>,</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>shap_summary_image</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_summary</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>X_test_shap <span class="op">=</span> X_test[features]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>shap_summary_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_summary.jpg'</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>with_constant <span class="op">=</span> sm.add_constant(X_test_shap)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>plot_shap_summary(</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    features_to_drop<span class="op">=</span>[<span class="st">'const'</span>],</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    plot_type<span class="op">=</span><span class="st">'violin'</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    show<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>shap_summary_image</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Plot saved successfully to: ../frontend/public/plots/shap_summary.jpg</code></pre>
@@ -1306,10 +1293,10 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="20362ad41094650f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:39.059665634Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:31.193107206Z&quot;}}" data-execution_count="16">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_bar</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>shap_feature_importance_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_feature_importance.jpg'</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>plot_shap_bar(final_model_logit, with_constant, plot_file<span class="op">=</span>shap_feature_importance_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_bar</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>shap_feature_importance_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_feature_importance.jpg'</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>plot_shap_bar(final_model_logit, with_constant, plot_file<span class="op">=</span>shap_feature_importance_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Plot saved successfully to: ../frontend/public/plots/shap_feature_importance.jpg</code></pre>
@@ -1329,20 +1316,20 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="c890ced12fa644ca" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:41.210328578Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:39.132133893Z&quot;}}" data-execution_count="17">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_waterfall_single</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>index_to_plot <span class="op">=</span> <span class="dv">99</span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>predicted_probability <span class="op">=</span> final_model_logit.predict(with_constant.iloc[[index_to_plot]])</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> <span class="ss">f"This case </span><span class="sc">{</span><span class="st">"has"</span> <span class="cf">if</span> predicted_probability<span class="sc">.</span>iloc[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"dont have"</span><span class="sc">}</span><span class="ss"> cancer."</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>single_explanation_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/single_explanation.jpg'</span></span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>plot_shap_waterfall_single(</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>    row_index<span class="op">=</span>index_to_plot,</span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss"> Single explanation"</span>,</span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>single_explanation_image</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_waterfall_single</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>index_to_plot <span class="op">=</span> <span class="dv">99</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>predicted_probability <span class="op">=</span> final_model_logit.predict(with_constant.iloc[[index_to_plot]])</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>label <span class="op">=</span> <span class="ss">f"This case </span><span class="sc">{</span><span class="st">"has"</span> <span class="cf">if</span> predicted_probability<span class="sc">.</span>iloc[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"does not have"</span><span class="sc">}</span><span class="ss"> cancer."</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>single_explanation_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/single_explanation.jpg'</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>plot_shap_waterfall_single(</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    row_index<span class="op">=</span>index_to_plot,</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="ss">f"</span><span class="sc">{</span>label<span class="sc">}</span><span class="ss"> Single explanation"</span>,</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>single_explanation_image</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Plot saved successfully to: ../frontend/public/plots/single_explanation.jpg</code></pre>
@@ -1363,11 +1350,11 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="addb963041547194" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:49.152457580Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:41.256129232Z&quot;}}" data-execution_count="18">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_dependence</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>shap_dependence_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence.jpg'</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence(final_model_logit, with_constant, <span class="st">'age'</span>, plot_file<span class="op">=</span>shap_feature_importance_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_shap_dependence</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>shap_dependence_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence.jpg'</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence(final_model_logit, with_constant, <span class="st">'age'</span>, plot_file<span class="op">=</span>shap_dependence_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Plot saved successfully to: ../frontend/public/plots/shap_feature_importance.jpg</code></pre>
@@ -1383,10 +1370,10 @@ Features saved to '../frontend/public/ols_weights_features.json'</code></pre>
 <div id="a72f66b197d1e0d1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:58:57.623259381Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:49.220964197Z&quot;}}" data-execution_count="19">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_top_shap_dependence</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence_top.jpg'</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>plot_top_shap_dependence(final_model_logit, with_constant, top_n<span class="op">=</span><span class="dv">3</span>, plot_file<span class="op">=</span>plot_shap_dependence_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels_utils <span class="im">import</span> plot_top_shap_dependence</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence_top.jpg'</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>plot_top_shap_dependence(final_model_logit, with_constant, top_n<span class="op">=</span><span class="dv">3</span>, plot_file<span class="op">=</span>plot_shap_dependence_image)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Automatically plotting 3 features: ['crp_level', 'oxygen_saturation', 'xray_abnormal']
@@ -1403,15 +1390,15 @@ Plot saved successfully to: ../frontend/public/plots/shap_dependence_top.jpg</co
 <div id="8053d5c26ce77b7d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;ExecuteTime&quot;,&quot;value&quot;:{&quot;end_time&quot;:&quot;2026-03-06T12:59:07.009614375Z&quot;,&quot;start_time&quot;:&quot;2026-03-06T12:58:57.679108006Z&quot;}}" data-execution_count="20">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(features)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence_label_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence_labels.jpg'</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>plot_top_shap_dependence(</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span>[<span class="st">'air_pollution_index'</span>, <span class="st">'passive_smoking'</span>, <span class="st">'healthcare_access'</span>, <span class="st">'family_history_cancer'</span>, <span class="st">'radon_exposure'</span>],</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>plot_shap_dependence_label_image</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(features)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>plot_shap_dependence_label_image <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>plot_folder<span class="sc">}</span><span class="ss">/shap_dependence_labels.jpg'</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>plot_top_shap_dependence(</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    final_model_logit,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    with_constant,</span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    features<span class="op">=</span>[<span class="st">'air_pollution_index'</span>, <span class="st">'passive_smoking'</span>, <span class="st">'healthcare_access'</span>, <span class="st">'family_history_cancer'</span>, <span class="st">'radon_exposure'</span>],</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    plot_file<span class="op">=</span>plot_shap_dependence_label_image</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>['age', 'smoking_years', 'passive_smoking', 'air_pollution_index', 'occupational_exposure', 'radon_exposure', 'family_history_cancer', 'copd', 'chronic_cough', 'shortness_of_breath', 'bmi', 'oxygen_saturation', 'crp_level', 'xray_abnormal', 'exercise_hours_per_week', 'diet_quality', 'healthcare_access']
@@ -1426,9 +1413,27 @@ Plot saved successfully to: ../frontend/public/plots/shap_dependence_labels.jpg<
 </div>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">8. Conclusions</h2>
+<p><strong>What we built.</strong> An end-to-end, interpretable classifier for lung cancer risk: multicollinearity pruning (VIF) → backward-elimination Logit → benchmark against an L1-regularized logistic regression → SHAP interpretability → coefficient export for in-browser inference.</p>
+<p><strong>Key findings.</strong></p>
+<ol type="1">
+<li><strong>Clinical measurements dominate.</strong> The three most influential features — <code>crp_level</code>, <code>oxygen_saturation</code>, and <code>xray_abnormal</code> — are all objective lab/imaging results rather than self-reported behaviors. That pattern is what you would hope a credible medical model learns.</li>
+<li><strong>Behavioral and environmental factors contribute coherent second-order signal.</strong> Smoking history, passive smoking, radon and occupational exposures all push risk in the medically expected direction (as seen in the SHAP summary and dependence plots).</li>
+<li><strong>Feature selection was robust.</strong> Multicollinear duplicates (e.g.&nbsp;<code>pack_years</code> vs <code>smoking_years</code>) were removed by VIF before fitting, and the surviving feature set is statistically significant end to end.</li>
+<li><strong>Interpretability comes free.</strong> Because the deployed model is a plain Logit, the browser app reproduces its exact probabilities with a dot product and a sigmoid — no server, no approximation, and every slider’s effect on the score is directly traceable to a coefficient.</li>
+</ol>
+<p><strong>Limitations &amp; future work.</strong></p>
+<ul>
+<li>The dataset is <strong>synthetic</strong>; coefficients (some odds ratios are implausibly large) and metrics should not be read as clinical findings.</li>
+<li>Single train/test split — cross-validated metrics with confidence intervals would harden the evaluation.</li>
+<li>The 0.5 decision threshold is arbitrary for a screening context; threshold tuning against a recall target (or a cost-sensitive analysis) is the natural next step.</li>
+<li>No probability <strong>calibration</strong> check yet (reliability curve / Brier score) — worth adding since the app surfaces raw probabilities to users.</li>
+</ul>
+
+
 </section>
 
 </main> <!-- /main -->
@@ -1518,7 +1523,7 @@ Plot saved successfully to: ../frontend/public/plots/shap_dependence_labels.jpg<
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/dmigue-rc\.github\.io\/lung-cancer-risk");
+        var filterRegex = new RegExp("https:\/\/migue-rc\.github\.io\/lung-cancer-risk");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
