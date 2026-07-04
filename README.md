@@ -1,4 +1,4 @@
-# Lung Cancer Risk Predictor 🫁📊
+# Lung Cancer Risk Predictor
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
@@ -12,15 +12,15 @@ An interactive, end-to-end data science project demonstrating the lifecycle of a
 
 ![Live Demo Preview](https://github.com/migue-rc/lung-cancer-risk/raw/refs/heads/main/frontend/public/lung-cancer-risk-demo.gif)
 
-🔗 **[Live Demo: Lung Cancer Risk Predictor](https://migue-rc.github.io/lung-cancer-risk/)**
+ **[Live Demo: Lung Cancer Risk Predictor](https://migue-rc.github.io/lung-cancer-risk/)**
 
 This project predicts the estimated probability of lung cancer based on various health, behavioral, and environmental features using a Logistic Regression model.
 
-> **⚠️ Medical Disclaimer:** This application and its underlying model are for educational and demonstrative purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+> ** Medical Disclaimer:** This application and its underlying model are for educational and demonstrative purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
 
 ---
 
-## 🎯 Project Goals
+## Project Goals
 
 The objective of this repository is to serve as a comprehensive portfolio piece bridging the gap between Data Science and Web Development. It demonstrates:
 1. **Data Science & Machine Learning:** Rigorous feature selection, model training, and interpretability using Python (Pandas, Scikit-Learn, SHAP).
@@ -28,22 +28,22 @@ The objective of this repository is to serve as a comprehensive portfolio piece 
 
 ---
 
-## 🔬 The Data Science Process
+## The Data Science Process
 
 All research, data preprocessing, and modeling were conducted in Jupyter Notebooks (`/notebooks`).
 
 ### 1. Exploratory Data Analysis & Feature Selection
-We began by analyzing the [dataset](https://www.kaggle.com/datasets/dhrubangtalukdar/lung-cancer-prediction-dataset) to understand the relationships between different variables and the target (`lung_cancer_risk`). 
+We began by analyzing the [dataset](https://www.kaggle.com/datasets/dhrubangtalukdar/lung-cancer-prediction-dataset) to understand the relationships between different variables and the target (`lung_cancer_risk`).
 
-👉 **[View the EDA Notebook](notebooks/behavioral.ipynb)**
-👉 **[View the Feature Selection Notebook](notebooks/features_selection.ipynb)**
+ **[View the EDA Notebook](notebooks/behavioral.ipynb)**
+ **[View the Feature Selection Notebook](notebooks/features_selection.ipynb)**
 
 ![Feature Impact](frontend/public/plots/features_impact.jpg)
 
-### 2. Model Training (Logistic Regression vs Lasso)
+### 2. Model Training (Logistic Regression vs L1-Regularized Logistic)
 We evaluated multiple models. Logistic Regression was ultimately chosen for its interpretability and ease of extraction (weights and intercept) for the frontend application.
 
-👉 **[View the Modeling Notebook](notebooks/modeling.ipynb)**
+ **[View the Modeling Notebook](notebooks/modeling.ipynb)**
 
 <div style="display: flex; gap: 10px;">
   <img src="frontend/public/plots/confusion_logit.jpg" width="48%" alt="Logit Confusion Matrix" />
@@ -64,9 +64,9 @@ To ensure the model makes decisions based on logical medical grounds, we used SH
 
 ---
 
-## 💻 The Frontend Application
+## The Frontend Application
 
-The frontend is a React application built with Vite and TypeScript. It does not rely on a Python backend API. Instead, it computes the logistic regression probability entirely in the browser using the extracted `ols_weights.json` and `ols_weights_features.json`.
+The frontend is a React application built with Vite and TypeScript. It does not rely on a Python backend API. Instead, it computes the logistic regression probability entirely in the browser using the extracted `logit_weights.json` and `logit_weights_features.json`.
 
 ### Key Features
 * **Real-time Inference:** The risk score updates instantly as sliders and checkboxes are manipulated.
@@ -75,7 +75,7 @@ The frontend is a React application built with Vite and TypeScript. It does not 
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 ├── notebooks/                   # Data Science Research
@@ -86,8 +86,8 @@ The frontend is a React application built with Vite and TypeScript. It does not 
 ├── public/                      # Static Assets
 │   ├── plots/                   # Exported charts from notebooks
 │   ├── feature_distributions.json # Data histograms for the UI
-│   ├── ols_weights.json         # Extracted model weights
-│   └── ols_weights_features.json# Feature names mapping
+│   ├── logit_weights.json         # Extracted model weights
+│   └── logit_weights_features.json# Feature names mapping
 ├── src/                         # React Frontend Code
 │   ├── App.tsx                  # Main application logic
 │   └── Slider.tsx               # Custom slider with integrated histogram

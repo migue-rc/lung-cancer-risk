@@ -73,11 +73,11 @@ function App() {
     document.body.style.color = '#f8fafc';
     
     Promise.all([
-      fetch(`${import.meta.env.BASE_URL}ols_weights.json`).then(res => {
+      fetch(`${import.meta.env.BASE_URL}logit_weights.json`).then(res => {
         if (!res.ok) throw new Error("Could not load weights.");
         return res.json();
       }),
-      fetch(`${import.meta.env.BASE_URL}ols_weights_features.json`).then(res => {
+      fetch(`${import.meta.env.BASE_URL}logit_weights_features.json`).then(res => {
         if (!res.ok) throw new Error("Could not load features list.");
         return res.json();
       }),

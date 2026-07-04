@@ -6,13 +6,12 @@ project:
 website:
   favicon: favicon.ico
   # Creates a top navbar so users can always get back to your Hub
-  site-url: "https://dmigue-rc.github.io/lung-cancer-risk"
+  site-url: "https://migue-rc.github.io/lung-cancer-risk"
   description: "An interactive, end-to-end data science project demonstrating the lifecycle of a machine learning model from exploratory data analysis (EDA) to a fully deployed frontend application."
   open-graph: true
   twitter-card: true
   image: "assets/hero.jpg"
   navbar:
-    background: primary
     left:
       - text: "← Back to Main"
         href: "https://migue-rc.github.io"
@@ -25,8 +24,8 @@ format:
   html:
     # Loads the base theme, then any local SCSS variables
     theme:
-      light: [sketchy, custom.scss]
-      dark: [sketchy, sketchy-dark.scss]
+      light: [sketchy, sketchy-light.scss, custom.scss]
+      dark: [sketchy, sketchy-dark.scss, custom.scss]
     # Injects your live, remote CSS file for instant global updates
     highlight-style: 
       light: github
